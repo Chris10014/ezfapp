@@ -1,0 +1,78 @@
+[33mcommit 1a47a19b49057590e6734b95b5635eebe7b7a051[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Christoph Lansche <christoph.lansche@t-online.de>
+Date:   Sat Mar 5 18:16:22 2022 +0100
+
+    Form mit Form Validation und Error messages
+
+[1mdiff --git a/package-lock.json b/package-lock.json[m
+[1mindex cfcf424..9dd1c4c 100644[m
+[1m--- a/package-lock.json[m
+[1m+++ b/package-lock.json[m
+[36m@@ -25,6 +25,7 @@[m
+         "react-query": "^3.34.16",[m
+         "react-router-dom": "^5.3.0",[m
+         "react-scripts": "5.0.0",[m
+[32m+[m[32m        "reactstrap": "^8.9.0",[m
+         "web-vitals": "^2.1.4",[m
+         "yup": "^0.32.11"[m
+       }[m
+[36m@@ -2068,6 +2069,19 @@[m
+       "resolved": "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz",[m
+       "integrity": "sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA=="[m
+     },[m
+[32m+[m[32m    "node_modules/@hypnosphi/create-react-context": {[m
+[32m+[m[32m      "version": "0.3.1",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/@hypnosphi/create-react-context/-/create-react-context-0.3.1.tgz",[m
+[32m+[m[32m      "integrity": "sha512-V1klUed202XahrWJLLOT3EXNeCpFHCcJntdFGI15ntCwau+jfT386w7OFTMaCqOgXUH1fa0w/I1oZs+i/Rfr0A==",[m
+[32m+[m[32m      "dependencies": {[m
+[32m+[m[32m        "gud": "^1.0.0",[m
+[32m+[m[32m        "warning": "^4.0.3"[m
+[32m+[m[32m      },[m
+[32m+[m[32m      "peerDependencies": {[m
+[32m+[m[32m        "prop-types": "^15.0.0",[m
+[32m+[m[32m        "react": ">=0.14.0"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+     "node_modules/@istanbuljs/load-nyc-config": {[m
+       "version": "1.1.0",[m
+       "resolved": "https://registry.npmjs.org/@istanbuljs/load-nyc-config/-/load-nyc-config-1.1.0.tgz",[m
+[36m@@ -8082,6 +8096,11 @@[m
+       "resolved": "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.9.tgz",[m
+       "integrity": "sha512-NtNxqUcXgpW2iMrfqSfR73Glt39K+BLwWsPs94yR63v45T0Wbej7eRmL5cWfwEgqXnmjQp3zaJTshdRW/qC2ZQ=="[m
+     },[m
+[32m+[m[32m    "node_modules/gud": {[m
+[32m+[m[32m      "version": "1.0.0",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/gud/-/gud-1.0.0.tgz",[m
+[32m+[m[32m      "integrity": "sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw=="[m
+[32m+[m[32m    },[m
+     "node_modules/gzip-size": {[m
+       "version": "6.0.0",[m
+       "resolved": "https://registry.npmjs.org/gzip-size/-/gzip-size-6.0.0.tgz",[m
+[36m@@ -11989,6 +12008,16 @@[m
+         "node": ">=4"[m
+       }[m
+     },[m
+[32m+[m[32m    "node_modules/popper.js": {[m
+[32m+[m[32m      "version": "1.16.1",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/popper.js/-/popper.js-1.16.1.tgz",[m
+[32m+[m[32m      "integrity": "sha512-Wb4p1J4zyFTbM+u6WuO4XstYx4Ky9Cewe4DWrel7B0w6VVICvPwdOpotjzcf6eD8TsckVnIMNONQyPIUFOUbCQ==",[m
+[32m+[m[32m      "deprecated": "You can find the new Popper v2 at @popperjs/core, this package is dedicated to the legacy v1",[m
+[32m+[m[32m      "funding": {[m
+[32m+[m[32m        "type": "opencollective",[m
+[32m+[m[32m        "url": "https://opencollective.com/popperjs"[m
+[32m+[m[32m      }[m
+[32m+[m[32m    },[m
+     "node_modules/portfinder": {[m
+       "version": "1.0.28",[m
+       "resolved": "https://registry.npmjs.org/portfinder/-/portfinder-1.0.28.tgz",[m
+[36m@@ -13698,6 +13727,62 @@[m
+         "react-dom": ">=16.6.0"[m
+       }[m
+     },[m
+[32m+[m[32m    "node_modules/reactstrap": {[m
+[32m+[m[32m      "version": "8.10.1",[m
+[32m+[m[32m      "resolved": "https://registry.npmjs.org/reactstrap/-/reactstrap-8.10.1.tgz",[m
+[32m+[m[32m      "integrity": "sha512-StjLADa/12yMNjafrSs+UD7sZAGtKpLO9fZp++2Dj0IzJinqY7eQhXlM3nFf0q40YsIcLvQdFc9pKF8PF4f0Qg==",[m
+[32m+[m[32m      "dependencies": {[m
+[32m+[m[32m        "@babel/runtime": "^7.12.5",[m
+[32m+[m[32m        "classnames": "^2.2.3",[
