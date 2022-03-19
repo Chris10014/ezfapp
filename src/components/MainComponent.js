@@ -1,7 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import RegisterForm from './RegisterFormComponent';
 import {Home} from "./HomeComponent";
+import Footer from "./FooterComponent";
+import {Header} from "./HeaderComponent";
 
 //react-query
 import { useQuery } from "react-query";
@@ -18,15 +20,20 @@ const fetchDates = () => {
 const Main = () => {
 
   const teams = useQuery("teams-list", fetchTeams);
-  const dates = useQuery("dates-list", fetchDates);
- 
+  const eventDates = useQuery("eventDates-list", fetchDates);
+
+  console.log("from MainComponent dates: ", eventDates)
+  console.log("from MainComponent teams: ", teams);
+
   return (
     <div>
+      <Header />
       <Switch>
-        <Route path="/home" component={() => <Home dates={dates.data} datesLoading={dates.isLoading} datesHasError={dates.isError} datesErrMsg={dates.error} />} />
-        <Route exact path="/registerForm" component={() => <RegisterForm teamsLoading={teams.isLoading} teamsErr={teams.isError} teamsErrMsg={teams.error} teams={teams.data} />}/>
+        <Route path="/home" component={() => <Home eventDates={eventDates.data} eventDatesLoading={eventDates.isLoading} eventDatesHasError={eventDates.isError} eventDatesErrMsg={eventDates.error} />} />
+        <Route exact path="/registerForm" component={() => <RegisterForm eventDateToRegister={eventDates.data?.data.filter((eventDate) => eventDate.regOpen)[0]} teamsLoading={teams.isLoading} teamsHasErr={teams.isError} teamsErrMsg={teams.error} teams={teams.data} />} />
         <Redirect to="/home" />
       </Switch>
+      <Footer />
     </div>
   );
 }
