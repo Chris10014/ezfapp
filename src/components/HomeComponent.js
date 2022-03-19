@@ -62,7 +62,6 @@ function RenderRegCard({eventDate}) {
 
 export const Home = (props) => {
   console.log("from HomeComponent props: 1. Loading: " + props.eventDatesLoading + " 2. dates: ", props.eventDates + " 3. hasErr: " + props.eventDatesHasError + " 4. errMsg: " + props.eventDatesErrMsg);
-  console.log("from HomeComponent DateTo Register: ", props.eventDateToRegister);
 
   const filteredEvent = props.eventDates?.data.map((eventDate) => {
     if (eventDate && eventDate.sportEvent.name === "1nzelzeitfahren") {
