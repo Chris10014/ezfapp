@@ -31,6 +31,10 @@ h1 {
   font-weight: bold;
 }
 
+.card-body, .nav-link {
+  font-family: "Lato", sans-serif;
+}
+
 /* Format inputFields */
 input, label, .form-text, .text-danger {
   font-family: 'Lato', sans-serif;

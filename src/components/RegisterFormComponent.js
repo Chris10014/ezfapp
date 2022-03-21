@@ -1,7 +1,8 @@
 import React from 'react'
 import { useFormik, yupToFormErrors } from 'formik';
 import * as Yup from "yup";
-import { Form, Row, FormLabel } from "react-bootstrap";
+import { Breadcrumb, BreadcrumbItem, Form, Row, FormLabel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 // get our fontawesome imports 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import InputError from "./InputErrorComponent";
@@ -78,168 +79,198 @@ const RegisterForm = (props) => {
 
     return (
       <div>
-        <h1 className="mt-3 mb-2 text-center">Anmeldung</h1>
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/home">Home</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem active>Anmeldung</BreadcrumbItem>
+        </Breadcrumb>
+        <h1 className="mt-3 mb-2 text-center">
+          Anmeldung{" "}
+          {props.eventDateToRegister
+            ? "für den " +
+              new Intl.DateTimeFormat("de-DE", {
+                year: "numeric",
+                month: "short",
+                day: "2-digit",
+              }).format(new Date(Date.parse(props.eventDateToRegister.start)))
+            : null}
+        </h1>
         <hr />
         {props.eventDateToRegister ? (
-        isLoading ? <Loading text="Daten werden gespeichert ..." /> : null,
-        isError ? <h2>{error.response.data.message}</h2> : null,
-
-        <Form onSubmit={formik.handleSubmit}>
-          <div className="container">
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="race">Wettkampf:{"\u00A0"}</FormLabel>
-              </div>
-              <div className="col-md-6">
-                  <select id="race" className="form-select" name="race" onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                    {props.eventDateToRegister?.races.map((race) => {
+          (isLoading ? <Loading text="Daten werden gespeichert ..." /> : null,
+          isError ? <h2>{error.response.data.message}</h2> : null,
+          (
+            <Form onSubmit={formik.handleSubmit}>
+              <div className="container">
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="race">Wettkampf:{"\u00A0"}</FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <select id="race" className="form-select" name="race" onChange={formik.handleChange} onBlur={formik.handleBlur}>
+                      {props.eventDateToRegister?.races.map((race) => {
+                        return (
+                          <option type="text" value={race._id} selected={race._id === formik.initialValues.race ? true : false}>
+                            {race.name}
+                          </option>
+                        );
+                      })}
+                    </select>
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="firstName">Vorname:{"\u00A0"}*</FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <input id="firstName" className="form-control" name="firstName" type="text" placeholder="Vorname" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.firstName} />
+                    {formik.touched.firstName && formik.errors.firstName ? <InputError message={formik.errors.firstName} type="warning" /> : null}
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel>Nachname:{"\u00A0"}*</FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <input id="lastName" className="form-control" name="lastName" type="text" placeholder="Nachname" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.lastName} />
+                    {formik.touched.lastName && formik.errors.lastName ? <InputError message={formik.errors.lastName} type="warning" /> : null}
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="offset-md-2">
+                    <div className="form-check">
+                      <input type="checkbox" className="form-check-input" name="hideLastName" id="hideLastName" onChange={formik.handleChange} onBlur={formik.handleBlur} value="hideLastName" />
+                      {"\u00A0"}
+                      <FormLabel className="col-md-6" htmlFor="hideLastName">
+                        Meinen Nachnamen in den Teilnehmer- und Ergebnislisten NICHT anzeigen.
+                      </FormLabel>
+                    </div>
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="male">Geschlecht:{"\u00A0"}*</FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <FormLabel htmlFor="male">
+                      m {"\u00A0"}
+                      <FontAwesomeIcon icon="fa-mars" />
+                      {"\u00A0"}
+                    </FormLabel>
+                    <input key="male" id="male" type="radio" value="male" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "male"} />
+                    {"\u00A0"}|{"\u00A0"}
+                    <FormLabel htmlFor="female">
+                      w {"\u00A0"}
+                      <FontAwesomeIcon icon="fa-venus" />
+                      {"\u00A0"}
+                    </FormLabel>
+                    <input key="female" id="female" type="radio" value="female" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "female"} />
+                    {"\u00A0"}|{"\u00A0"}
+                    <FormLabel htmlFor="diverse">
+                      d {"\u00A0"}
+                      <FontAwesomeIcon icon="fa-genderless" />
+                      {"\u00A0"}
+                    </FormLabel>
+                    <input key="diverse" id="diverse" type="radio" value="diverse" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "diverse"} />
+                  </div>
+                  <span className="offset-2">{formik.touched.gender && formik.errors.gender ? <InputError message={formik.errors.gender} type="warning" /> : null}</span>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="yearOfBirth">Jahrgang:{"\u00A0"}*</FormLabel>
+                  </div>
+                  <div className="col-md-2">
+                    <input id="yearOfBirth" className="form-control" name="yearOfBirth" type="number" placeholder="Geburtsjahr" min="1950" max={new Date().getFullYear() - 15} onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.yearOfBirth} />
+                  </div>
+                  <span className="offset-2">{formik.touched.yearOfBirth && formik.errors.yearOfBirth ? <InputError message={formik.errors.yearOfBirth} type="warning" /> : null}</span>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel>E-Mail: *</FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <input id="email" className="form-control" name="email" type="email" placeholder="meine@email.de" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email} />
+                    {formik.touched.email && formik.errors.email ? <InputError message={formik.errors.email} type="warning" /> : null}
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="team">Team: </FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <input id="team" className="form-control" name="team" type="text" placeholder="Mein Team" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.team} list="teams-list" />
+                    {formik.touched.team && formik.errors.team ? <InputError message={formik.errors.team} type="warning" /> : null}
+                  </div>
+                  <datalist id="teams-list">
+                    {props.teams?.data.map((team) => {
                       return (
-                        <option type="text" value={race._id} selected={race._id === formik.initialValues.race ? true : false}>
-                          {race.name}
+                        <option key={team._id} value={team.name}>
+                          {team.name}
                         </option>
                       );
                     })}
-                  </select>
-              
+                  </datalist>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="col-md-2">
+                    <FormLabel htmlFor="estimatedFinishTime">Zielzeit: </FormLabel>
+                  </div>
+                  <div className="col-md-6">
+                    <input id="estimatedFinishTime" className="form-control" name="estimatedFinishTime" type="time" step="1" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.estimatedFinishTime} />
+                    {formik.touched.estimatedFinishTime && formik.errors.estimatedFinishTime ? <InputError message={formik.errors.estimatedFinishTime} type="warning" /> : null}
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="offset-md-2 mt-3">
+                    <div className="form-check">
+                      <input type="checkbox" className="form-check-input" id="acceptTermsAndConditions" name="acceptTermsAndConditions" onChange={formik.handleChange} onBlur={formik.handleBlur} value="acceptTermsAndConditions" required />
+                      {"\u00A0"}
+                      <FormLabel className="col-md-6" htmlFor="acceptTermsAndConditions">
+                        Ich habe die{" "}
+                        <a href={serverUrl + "/assets/1zf/downloads/Verzichtserklärung und Haftungsfreistellung.pdf"} target="_blank" rel="noreferrer">
+                          Verzichtserklärung und Haftungsfreistellung
+                        </a>{" "}
+                        gelesen und akzeptiert.{"\u00A0"}*
+                      </FormLabel>
+                      {formik.touched.acceptTermsAndConditions && formik.errors.acceptTermsAndConditions ? <InputError message={formik.errors.acceptTermsAndConditions} type="warning" /> : null}
+                    </div>
+                  </div>
+                </Row>
+                <Row className="form-group mb-2">
+                  <div className="offset-md-2">
+                    <div className="form-check">
+                      <input type="checkbox" className="form-check-input" name="acceptRaceInfo" id="acceptRaceInfo" onChange={formik.handleChange} onBlur={formik.handleBlur} value="acceptRaceInfo" required />
+                      {"\u00A0"}
+                      <FormLabel className="col-md-6" htmlFor="acceptRaceInfo">
+                        Ich habe die{" "}
+                        <a href={serverUrl + "/assets/1zf/downloads/1zF_Infounterlage.pdf"} target="_blank" rel="noreferrer">
+                          Infounterlage
+                        </a>{" "}
+                        gelesen und bin mit den Gefahrenhinweisen vertraut.
+                        <p>
+                          Ich stimme den <a href="/privacy">Datenschutzbestimmungen</a> zu und bin damit einverstanden, dass die von mir zu Anmeldung angegeben Daten gespeichert werden. Sie werden alleine zur Durchführung, Auswertung und Ergebnisdarstellung des Einzelzeitfahren Training genutzt. In diesem Rahmen werden Namen und erreichte Zeit veröffentlicht. Es werden keine Daten an unbefugte Dritte weitergegeben.{"\u00A0"}*
+                        </p>
+                      </FormLabel>
+                      {formik.touched.acceptRaceInfo && formik.errors.acceptRaceInfo ? <InputError message={formik.errors.acceptRaceInfo} type="warning" /> : null}
+                    </div>
+                  </div>
+                </Row>
               </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="firstName">Vorname:{"\u00A0"}*</FormLabel>
+              <div className="offset-2 mb-2 text-muted small">* Pflichtangaben</div>
+              <div className="offset-2 mb-3">
+                <input type="submit" className="col-md-auto btn btn-success" name="send" value="Weiter" />
+                {"\u00A0"}
+                {"\u00A0"}
+                <input type="reset" className="col-md-auto btn btn-danger" name="cancel" value="Abbrechen" />
               </div>
-              <div className="col-md-6">
-                <input id="firstName" className="form-control" name="firstName" type="text" placeholder="Vorname" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.firstName} />
-                {formik.touched.firstName && formik.errors.firstName ? <InputError message={formik.errors.firstName} type="warning" /> : null}
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel>Nachname:{"\u00A0"}*</FormLabel>
-              </div>
-              <div className="col-md-6">
-                <input id="lastName" className="form-control" name="lastName" type="text" placeholder="Nachname" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.lastName} />
-                {formik.touched.lastName && formik.errors.lastName ? <InputError message={formik.errors.lastName} type="warning" /> : null}
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="offset-md-2">
-                <div className="form-check">
-                  <input type="checkbox" className="form-check-input" name="hideLastName" id="hideLastName" onChange={formik.handleChange} onBlur={formik.handleBlur} value="hideLastName" />
-                  {"\u00A0"}
-                  <FormLabel className="col-md-6" htmlFor="hideLastName">
-                    Meinen Nachnamen in den Teilnehmer- und Ergebnislisten NICHT anzeigen.
-                  </FormLabel>
-                </div>
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="male">Geschlecht:{"\u00A0"}*</FormLabel>
-              </div>
-              <div className="col-md-6">
-                <FormLabel htmlFor="male">
-                  m {"\u00A0"}
-                  <FontAwesomeIcon icon="fa-mars" />
-                  {"\u00A0"}
-                </FormLabel>
-                <input key="male" id="male" type="radio" value="male" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "male"} />
-                {"\u00A0"}|{"\u00A0"}
-                <FormLabel htmlFor="female">
-                  w {"\u00A0"}
-                  <FontAwesomeIcon icon="fa-venus" />
-                  {"\u00A0"}
-                </FormLabel>
-                <input key="female" id="female" type="radio" value="female" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "female"} />
-                {"\u00A0"}|{"\u00A0"}
-                <FormLabel htmlFor="diverse">
-                  d {"\u00A0"}
-                  <FontAwesomeIcon icon="fa-genderless" />
-                  {"\u00A0"}
-                </FormLabel>
-                <input key="diverse" id="diverse" type="radio" value="diverse" name="gender" onChange={formik.handleChange} onBlur={formik.handleBlur} defaultChecked={formik.values.gender === "diverse"} />
-              </div>
-              <span className="offset-2">{formik.touched.gender && formik.errors.gender ? <InputError message={formik.errors.gender} type="warning" /> : null}</span>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="yearOfBirth">Jahrgang:{"\u00A0"}*</FormLabel>
-              </div>
-              <div className="col-md-2">
-                <input id="yearOfBirth" className="form-control" name="yearOfBirth" type="number" placeholder="Geburtsjahr" min="1950" max={new Date().getFullYear() - 15} onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.yearOfBirth} />
-              </div>
-              <span className="offset-2">{formik.touched.yearOfBirth && formik.errors.yearOfBirth ? <InputError message={formik.errors.yearOfBirth} type="warning" /> : null}</span>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel>E-Mail: *</FormLabel>
-              </div>
-              <div className="col-md-6">
-                <input id="email" className="form-control" name="email" type="email" placeholder="meine@email.de" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.email} />
-                {formik.touched.email && formik.errors.email ? <InputError message={formik.errors.email} type="warning" /> : null}
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="team">Team: </FormLabel>
-              </div>
-              <div className="col-md-6">
-                <input id="team" className="form-control" name="team" type="text" placeholder="Mein Team" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.team} list="teams-list" />
-                {formik.touched.team && formik.errors.team ? <InputError message={formik.errors.team} type="warning" /> : null}
-              </div>
-              <datalist id="teams-list">
-                {props.teams?.data.map((team) => {
-                  return (
-                    <option key={team._id} value={team.name}>
-                      {team.name}
-                    </option>
-                  );
-                })}
-              </datalist>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="col-md-2">
-                <FormLabel htmlFor="estimatedFinishTime">Zielzeit: </FormLabel>
-              </div>
-              <div className="col-md-6">
-                <input id="estimatedFinishTime" className="form-control" name="estimatedFinishTime" type="time" step="1" onChange={formik.handleChange} onBlur={formik.handleBlur} value={formik.values.estimatedFinishTime} />
-                {formik.touched.estimatedFinishTime && formik.errors.estimatedFinishTime ? <InputError message={formik.errors.estimatedFinishTime} type="warning" /> : null}
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="offset-md-2 mt-3">
-                <div className="form-check">
-                  <input type="checkbox" className="form-check-input" id="acceptTermsAndConditions" name="acceptTermsAndConditions" onChange={formik.handleChange} onBlur={formik.handleBlur} value="acceptTermsAndConditions" required />
-                  {"\u00A0"}
-                  <FormLabel className="col-md-6" htmlFor="acceptTermsAndConditions">
-                    Ich habe die Verzichtserklärung und Haftungsfreistellung gelesen und akzeptiert.{"\u00A0"}*
-                  </FormLabel>
-                  {formik.touched.acceptTermsAndConditions && formik.errors.acceptTermsAndConditions ? <InputError message={formik.errors.acceptTermsAndConditions} type="warning" /> : null}
-                </div>
-              </div>
-            </Row>
-            <Row className="form-group mb-2">
-              <div className="offset-md-2">
-                <div className="form-check">
-                  <input type="checkbox" className="form-check-input" name="acceptRaceInfo" id="acceptRaceInfo" onChange={formik.handleChange} onBlur={formik.handleBlur} value="acceptRaceInfo" required />
-                  {"\u00A0"}
-                  <FormLabel className="col-md-6" htmlFor="acceptRaceInfo">
-                    Ich habe die Infounterlage gelesen und bin mit den Gefahrenhinweisen vertraut.
-                    <p>Ich bin damit einverstanden, dass die von mir zu Anmeldung angegeben Daten gespeichert werden. Sie werden alleine zur Durchführung, Auswertung und Ergebnisdarstellung des Einzelzeitfahren Training genutzt. In diesem Rahmen werden Namen und erreichte Zeit veröffentlicht. Es werden keine Daten an unbefugte Dritte weitergegeben.{"\u00A0"}*</p>
-                  </FormLabel>
-                  {formik.touched.acceptRaceInfo && formik.errors.acceptRaceInfo ? <InputError message={formik.errors.acceptRaceInfo} type="warning" /> : null}
-                </div>
-              </div>
-            </Row>
+            </Form>
+          ))
+        ) : (
+          <div className="text-center">
+            <h3>Eine Anmeldung ist zur Zeit nicht nicht möglich.</h3>
           </div>
-          <div className="offset-2 mb-2 text-muted small">* Pflichtangaben</div>
-          <div className="offset-2 mb-3">
-            <input type="submit" className="col-md-auto btn btn-success" name="send" value="Weiter" />
-            {"\u00A0"}
-            {"\u00A0"}
-            <input type="reset" className="col-md-auto btn btn-danger" name="cancel" value="Abbrechen" />
-          </div>
-        </Form>
-        ) : <h3>Zur Zeit ist keine Anmeldung möglich.</h3>}
+        )}
       </div>
     );
   

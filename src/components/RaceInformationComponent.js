@@ -1,9 +1,17 @@
 import React from 'react'
+import { Link } from "react-router-dom";
+import { Breadcrumb, BreadcrumbItem } from 'react-bootstrap';
 import { serverUrl } from '../shared/serverUrl'
 
 export const RaceInformation = ({eventDate}) => {
   return (
     <div className="container">
+      <Breadcrumb>
+        <BreadcrumbItem>
+          <Link to="/home">Home</Link>
+        </BreadcrumbItem>
+        <BreadcrumbItem active>Infos</BreadcrumbItem>
+      </Breadcrumb>
       <h1 className="mt-3 mb-2 text-center">Ausschreibung und Regeln</h1>
       <hr />
 
@@ -27,11 +35,11 @@ export const RaceInformation = ({eventDate}) => {
               <li>Gastfahrer können mit Zustimmung des Veranstalters zugelassen werden.</li>
               <li>
                 Jeder liest und akzeptiert die{" "}
-                <a href={serverUrl + "/assets/1zf/downloads/Verzichtserklärung und Haftungsfreistellung.pdf"} target="_blank">
+                <a href={serverUrl + "/assets/1zf/downloads/Verzichtserklärung und Haftungsfreistellung.pdf"} target="_blank" rel="noreferrer">
                   Verzichtserklärung, die Haftungsfreistellung
                 </a>{" "}
                 sowie die{" "}
-                <a href={serverUrl + "/assets/1zf/downloads/1zF_Infounterlage.pdf"} target="_blank">
+                <a href={serverUrl + "/assets/1zf/downloads/1zF_Infounterlage.pdf"} target="_blank" rel="noreferrer">
                   Information zu den Gefahrenpunkten.
                 </a>
               </li>
@@ -55,7 +63,7 @@ export const RaceInformation = ({eventDate}) => {
           <p>Die Strecke ist ca. 16,5 km und verläuft als Wendepunktstrecke beginnend am Ortsausgang Vockenhausen nach Heftrich. Der Kreisverkehr am Ortseingang Heftrich dient als Wendepunkt (Achtung: Fahrzeuge im Kreisel haben Vorfahrt). Das Ziel ist von Ehlhalten kommend am Ortseingang Vockenhausen auf Höhe des Starts.</p>
           <p>
             Die geplante Strecke im Detail findest Du{" "}
-            <a href="https://www.alltrails.com/explore/map/main-taunus-ezf?u=m" target="_blank">
+            <a href="https://www.alltrails.com/explore/map/main-taunus-ezf?u=m" target="_blank" rel="noreferrer">
               {" "}
               hier >>
             </a>
@@ -65,11 +73,14 @@ export const RaceInformation = ({eventDate}) => {
           <p>Die Strecke ist während der Veranstaltung nicht gesperrt und es gilt uneingeschränkt die StVO. Verkehrssicherheit hat die höchste Priorität. Jeder fährt auf eigene Verantwortung.</p>
           <h2>Ort und Zeit</h2>
           <p>
-            Datum: {eventDate.start ? new Intl.DateTimeFormat("de-DE", {
-                              year: "numeric",
-                              month: "short",
-                              day: "2-digit",
-                            }).format(new Date(Date.parse(eventDate.start))) : "nicht terminiert"}
+            Datum:{" "}
+            {eventDate?.start
+              ? new Intl.DateTimeFormat("de-DE", {
+                  year: "numeric",
+                  month: "short",
+                  day: "2-digit",
+                }).format(new Date(Date.parse(eventDate.start)))
+              : "nicht terminiert"}
             <br />
             Start: erster Start erfolgt um 8:00h (Änderungen vorbehalten). Weitere Startzeiten bitte der Teilnehmerliste entnehmen.
             <br />

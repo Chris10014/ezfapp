@@ -4,10 +4,10 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { BrowserRouter, Switch, Route, Link, Redirect } from "react-router-dom";
 // fontawesome imports
 import { library } from '@fortawesome/fontawesome-svg-core';
-import {faMars, faVenus, faGenderless, faSignInAlt, faPlusCircle, faCircleNotch, faSpinner, faFlag, faSearch, faGlobe, faRunning, faSwimmer, faBiking, faHiking, faCircle, faQuestion, faWalking, faStopwatch, faMedal, faCalendarAlt, faFrown, faSadTear } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faCircleInfo, faMars, faRectangleList, faTrophy, faVenus, faGenderless, faSignInAlt, faPlusCircle, faCircleNotch, faSpinner, faFlag, faSearch, faGlobe, faRunning, faSwimmer, faBiking, faHiking, faCircle, faQuestion, faWalking, faStopwatch, faMedal, faCalendarAlt, faFrown, faSadTear } from "@fortawesome/free-solid-svg-icons";
 
 // fontawesome icons
-library.add(faMars, faVenus, faGenderless, faSignInAlt, faPlusCircle, faCircleNotch, faSpinner, faFlag, faSearch, faGlobe, faRunning, faSwimmer, faBiking, faHiking, faCircle, faQuestion, faWalking, faStopwatch, faMedal, faCalendarAlt, faFrown, faSadTear);
+library.add(faClipboardList, faCircleInfo , faMars, faMedal, faRectangleList, faTrophy, faVenus, faGenderless, faSignInAlt, faPlusCircle, faCircleNotch, faSpinner, faFlag, faSearch, faGlobe, faRunning, faSwimmer, faBiking, faHiking, faCircle, faQuestion, faWalking, faStopwatch, faMedal, faCalendarAlt, faFrown, faSadTear);
 
 const queryClient = new QueryClient();
 
@@ -15,7 +15,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
-        <div className="container">
+        <div className="container-fluid">
           <Main />
         </div>
       </BrowserRouter>

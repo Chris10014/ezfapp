@@ -5,12 +5,12 @@ import { serverUrl } from "../shared/serverUrl";
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from "reactstrap";
 // get our fontawesome imports
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Breadcrumb, BreadcrumbItem, Row } from 'react-bootstrap';
 
 function RenderRegCard({eventDate}) {
   return (
     <div key={eventDate._id} className="col-12 col-md-6 col-lg-4">
       <Card className="h-100 text-white bg-dark">
-        <CardImg src={serverUrl + "/assets/images/1zf-app/registerTile_small.png"} />
         <CardBody>
           <Link className="text-decoration-none text-white" to={`/registerForm`} /*link to the sportEvent details */>
             <CardImgOverlay>
@@ -60,41 +60,70 @@ function RenderRegCard({eventDate}) {
   );
 }
 
-export const Home = (props) => {
-  console.log("from HomeComponent props: 1. Loading: " + props.eventDatesLoading + " 2. dates: ", props.eventDates + " 3. hasErr: " + props.eventDatesHasError + " 4. errMsg: " + props.eventDatesErrMsg);
-
-  const filteredEvent = props.eventDates?.data.map((eventDate) => {
-    if (eventDate && eventDate.sportEvent.name === "1nzelzeitfahren") {
-      return <RenderRegCard eventDate={eventDate} />;
-    } else {
-      return null;
-    }
-  });
+export const Home = ({eventDates, eventDatesLoading, eventDatesHasError, eventDatesErrMsg, eventDateToRegister}) => {
+  console.log("from HomeComponent props: 1. Loading: " + eventDatesLoading + " 2. dates: ", eventDates + " 3. hasErr: " + eventDatesHasError + " 4. errMsg: " + eventDatesErrMsg);
 
   return (
     <div className="container">
-      <h1 className="mt-3 mb-2 text-center">TSG Eppstein 1nzelzeitfahren</h1>
-      <hr />
-      {props.eventDatesLoading ? (
-        <div className="container">
-          <Loading text="Veranstaltung wird geladen ..." />
+      <Breadcrumb>
+        <BreadcrumbItem active>Home</BreadcrumbItem>
+      </Breadcrumb>
+      <Row>
+        <div className="col-12 col-md-6 mb-2">
+          <Card className="h-100 text-white bg-dark">
+            <CardBody className="text-center">
+              {eventDateToRegister ? (
+                <Link className="text-decoration-none text-white" to={`/registerForm`} /*link to the sportEvent details */>
+                  <FontAwesomeIcon className="mb-3" icon="fa-clipboard-list" size="4x" />
+                  <div>
+                    Anmeldung für{" "}
+                    {new Intl.DateTimeFormat("de-DE", {
+                      year: "numeric",
+                      month: "short",
+                      day: "2-digit",
+                    }).format(new Date(Date.parse(eventDateToRegister.start)))}
+                  </div>
+                </Link>
+              ) : (
+                <>
+                  <FontAwesomeIcon className="mb-3" icon="fa-clipboard-list" size="4x" />
+                  <div>Anmeldung zur Zeit nicht möglich.</div>
+                </>
+              )}
+            </CardBody>
+          </Card>
         </div>
-      ) : props.eventDatesHasError ? (
-        <h4>{props.eventDatesErrMsg}</h4>
-      ) : filteredEvent.length !== 0 ? (
-       
-        filteredEvent
-      
-      ) : (
-        <div className="container">
-          <div className="row col-12 text-center">
-            <h6>
-              Die Suche ergab leider kein Ergebnis.&nbsp;&nbsp;
-              <FontAwesomeIcon icon="sad-tear" color="#bbb" size="lg" />
-            </h6>
-          </div>
+        <div className="col-12 col-md-6 mb-2">
+          <Card className="h-100 text-white bg-dark">
+            <CardBody className="text-center">
+              <Link className="text-decoration-none text-white" to={`/raceInformation`} /*link to the sportEvent details */>
+                <FontAwesomeIcon className="mb-3" icon="fa-circle-info" size="4x" />
+                <div className="text-center">Infos</div>
+              </Link>
+            </CardBody>
+          </Card>
         </div>
-      )}
+        <div className="col-12 col-md-6">
+          <Card className="h-100 text-white bg-dark">
+            <CardBody className="text-center">
+              <Link className="text-decoration-none text-white" to={`/participants`} /*link to the sportEvent details */>
+                <FontAwesomeIcon className="mb-3" icon="fa-rectangle-list" size="4x" />
+                <div className="text-center">Teilnehmer</div>
+              </Link>
+            </CardBody>
+          </Card>
+        </div>
+        <div className="col-12 col-md-6">
+          <Card className="h-100 text-white bg-dark">
+            <CardBody className="text-center">
+              <Link className="text-decoration-none text-white" to={`/results`} /*link to the sportEvent details */>
+                <FontAwesomeIcon className="mb-3" icon="fa-medal" size="4x" />
+                <div className="text-center">Ergebnisse</div>
+              </Link>
+            </CardBody>
+          </Card>
+        </div>
+      </Row>
     </div>
   );
 };
